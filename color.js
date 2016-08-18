@@ -115,19 +115,14 @@ Color = {
         return Color.rgbToHex();
     },
 
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
+    /* darkens a color by the percentage
+    * @param {object} color in hex (0xabcdef)
     * @param {number} amount
+    * @return {number}
     */
     darken: function(color, amount)
     {
-        amount = amount || 10;
-        var hsl = Color.hexToHsl(color);
-        hsl.l -= amount / 100;
-        hsl.l = Math.min(1, Math.max(0, hsl.l));
-        return Color.hslToHex(hsl);
+        return Color.blend(amount, color, 0);
     },
 
     /** based on tinycolor
@@ -161,21 +156,33 @@ Color = {
 
     /**
      * blends two colors together
-     * based on http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
      *
      * @param  {number} percent [0.0 - 1.0]
-     * @param  {string} color1    first color in 0x123456 format
-     * @param  {string} color2    second color in 0x123456 format
-     * @return {string}
+     * @param  {string} color1 first color in 0x123456 format
+     * @param  {string} color2 second color in 0x123456 format
+     * @return {number}
      */
     blend: function(percent, color1, color2)
     {
-        var hex1 = Color.hexToRgb(color1),
-            hex2 = Color.hexToRgb(color2);
-
-        return '0x' + (0x1000000 + (Math.round((hex2.r - hex1.r) * percent) + hex1.r) * 0x10000 +
-            (Math.round((hex2.g - hex1.g) * percent) + hex1.g) * 0x100 +
-            (Math.round((hex2.b - hex1.b) * percent) + hex1.b)).toString(16).slice(1);
+        if (percent === 0)
+        {
+            return color1;
+        }
+        if (percent === 1)
+        {
+            return color2;
+        }
+        var r1 = color1 >> 16;
+        var g1 = color1 >> 8 & 0x0000ff;
+        var b1 = color1 & 0x0000ff;
+        var r2 = color2 >> 16;
+        var g2 = color2 >> 8 & 0x0000ff;
+        var b2 = color2 & 0x0000ff;
+        var percent1 = 1 - percent;
+        var r = percent1 * r1 + percent * r2;
+        var g = percent1 * g1 + percent * g2;
+        var b = percent1 * b1 + percent * b2;
+        return r << 16 | g << 8 | b;
     },
 
     /**
