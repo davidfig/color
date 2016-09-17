@@ -5,40 +5,40 @@
     Copyright YOPEY YOPEY LLC and other contributors
 */
 
-/**
- * static class with color functions
- */
-Color = {
+const Random = require('yy-random');
 
+/** @class */
+class Color
+{
     /**
      * converts a #FFFFFF to 0x123456
      * @param  {string} color
      * @return {string}
      */
-    poundToHex: function(color)
+    poundToHex(color)
     {
         return '0x' + parseInt(color.substr(1)).toString(16);
-    },
+    }
 
     /**
      * converts a 0x123456 to #FFFFFF
      * @param  {string} color
      * @return {string}
      */
-    hexToPound: function(color)
+    hexToPound(color)
     {
         return '#' + color.substr(2);
-    },
+    }
 
     /**
      * converts a number to #FFFFFF
      * @param  {number} color
      * @return {string}
      */
-    valueToPound: function(color)
+    valueToPound(color)
     {
         return '#' + color.toString(16);
-    },
+    }
 
     /**
      * based on tinycolor
@@ -47,9 +47,9 @@ Color = {
      * @param {string} color
      * @returns {object}
      */
-    hexToHsl: function (color)
+    hexToHsl (color)
     {
-        var rgb = Color.hexToRgb(color),
+        var rgb = this.hexToRgb(color),
             r = rgb.r,
             g = rgb.g,
             b = rgb.b;
@@ -75,14 +75,14 @@ Color = {
         }
 
         return { h: h, s: s, l: l };
-    },
+    }
 
     /** based on tinycolor
     * https://github.com/bgrins/TinyColor
     * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
     * @param {object} color
     */
-    hslToHex: function(color)
+    hslToHex(color)
     {
         var r, g, b,
             h = color.h,
@@ -112,18 +112,18 @@ Color = {
         }
 
         rgb = { r: r * 255, g: g * 255, b: b * 255 };
-        return Color.rgbToHex();
-    },
+        return this.rgbToHex();
+    }
 
     /* darkens a color by the percentage
     * @param {object} color in hex (0xabcdef)
     * @param {number} amount
     * @return {number}
     */
-    darken: function(color, amount)
+    darken(color, amount)
     {
-        return Color.blend(amount, color, 0);
-    },
+        return this.blend(amount, color, 0);
+    }
 
     /** based on tinycolor
     * https://github.com/bgrins/TinyColor
@@ -131,14 +131,14 @@ Color = {
     * @param {object} color
     * @param {number} amount
     */
-    saturate: function(color, amount)
+    saturate(color, amount)
     {
         amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = Color.hexToHsl(color);
+        var hsl = this.hexToHsl(color);
         hsl.s += amount / 100;
         hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return Color.hslToHex(hsl);
-    },
+        return this.hslToHex(hsl);
+    }
 
     /** based on tinycolor
     * https://github.com/bgrins/TinyColor
@@ -146,23 +146,22 @@ Color = {
     * @param {object} color
     * @param {number} amount
     */
-    desaturate: function(color, amount) {
+    desaturate(color, amount) {
         amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = Color.hexToHsl(color);
+        var hsl = this.hexToHsl(color);
         hsl.s -= amount / 100;
         hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return Color.hslToHex(hsl);
-    },
+        return this.hslToHex(hsl);
+    }
 
     /**
      * blends two colors together
-     *
      * @param  {number} percent [0.0 - 1.0]
      * @param  {string} color1 first color in 0x123456 format
      * @param  {string} color2 second color in 0x123456 format
      * @return {number}
      */
-    blend: function(percent, color1, color2)
+    blend(percent, color1, color2)
     {
         if (percent === 0)
         {
@@ -183,14 +182,14 @@ Color = {
         var g = percent1 * g1 + percent * g2;
         var b = percent1 * b1 + percent * b2;
         return r << 16 | g << 8 | b;
-    },
+    }
 
     /**
      * returns a hex color into an rgb value
      * @param  {number} hex
      * @return {string}
      */
-    hexToRgb: function(hex)
+    hexToRgb(hex)
     {
         if (hex === 0)
         {
@@ -207,7 +206,7 @@ Color = {
             g: parseInt(result[2], 16),
             b: parseInt(result[3], 16)
         } : null;
-    },
+    }
 
     /**
      * rgb color to hex in the form of 0x123456
@@ -216,7 +215,7 @@ Color = {
      * @param  {number|null} b
      * @return {string}
      */
-    rgbToHex: function(r, g, b)
+    rgbToHex(r, g, b)
     {
         if (arguments.length === 1) {
             if (arguments[0].constructor === Array) {
@@ -233,52 +232,47 @@ Color = {
             }
         }
         return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
-    },
+    }
 
-    random: function(min, max)
+    /**
+     * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
+     * @param {number} min value for random number
+     * @param {number} max value for random number
+     * @return {number} color
+     */
+    random(min, max)
     {
         function random()
         {
             return Random.range(min, max);
         }
-        var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1},{r:0,g:1,b:1},{r:1,g:0,b:0},{r:0,g:1,b:0},{r:0,g:0,b:1}];
+
+        var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}];
         var color = Random.pick(colors);
         min = min || 0;
         max = max || 255;
-        return Color.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0);
-    },
+        return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0);
+    }
 
     // h: 0-360, s: 0-1, l: 0-1
-    randomHSL: function(hMin, hMax, sMin, sMax, lMin, lMax)
+    /**
+     * returns a random color based on hsl
+     * @param {number} hMin [0, 360]
+     * @param {number} hMax [hMin, 360]
+     * @param {number} sMin [0, 1]
+     * @param {number} sMax [sMin, 1]
+     * @param {number} lMin [0, 1]
+     * @param {number} lMax [lMin, 1]
+     */
+    randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
     {
         var color = {
             h: Random.range(hMin, hMax),
             s: Random.range(sMin, sMax, true),
             l: Random.range(lMin, lMax, true)
         };
-        return Color.hslToHex(color);
+        return this.hslToHex(color);
     }
 };
 
-// add support for AMD (Asynchronous Module Definition) libraries such as require.js.
-if (typeof define === 'function' && define.amd)
-{
-    define(function()
-    {
-        return {
-            Color: Color
-        };
-    });
-}
-
-// add support for CommonJS libraries such as browserify.
-if (typeof exports !== 'undefined')
-{
-    module.exports = Color;
-}
-
-// define globally in case AMD is not available or available but not used
-if (typeof window !== 'undefined')
-{
-    window.color = Color;
-}
+module.exports = new Color();
