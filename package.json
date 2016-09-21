@@ -1,6 +1,6 @@
 {
   "name": "yy-color",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "color javascript library",
   "main": "color.js",
   "scripts": {
@@ -19,5 +19,8 @@
   "homepage": "https://github.com/davidfig/color#readme",
   "devDependencies": {
     "jsdoc-to-markdown": "^1.3.7"
+  },
+  "dependencies": {
+    "yy-random": "^1.0.1"
   }
 }
