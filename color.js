@@ -1,9 +1,10 @@
-/*
-    color.js <https://github.com/davidfig/color>
-    Released under MIT license <https://github.com/davidfig/color/license>
-    Author David Figatner and other contributors
-    Copyright YOPEY YOPEY LLC and other contributors
-*/
+/**
+ * @file color.js
+ * @author David Figatner
+ * @license MIT
+ * @copyright YOPEY YOPEY LLC 2016
+ * {@link https://github.com/davidfig/color}
+ */
 
 const Random = require('yy-random');
 
