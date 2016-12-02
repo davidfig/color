@@ -274,6 +274,24 @@ class Color
         };
         return this.hslToHex(color);
     }
+
+    /**
+     * returns random colors based on HSL with different hues
+     * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     * @returns {number[]} colors in hex format (0x123456)
+     */
+    randomGoldenRatioHSL(count, saturation, luminosity)
+    {
+        const goldenRatio = 0.618033988749895;
+        let h = Random.get(1, true);
+        const colors = [];
+        for (let i = 0; i < count; i++)
+        {
+            colors.push(this.hslToHex(h, saturation, luminosity));
+            h = (h + goldenRatio) % 1;
+        }
+        return colors;
+    }
 };
 
 module.exports = new Color();
