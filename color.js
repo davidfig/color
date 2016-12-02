@@ -231,7 +231,7 @@ class Color
     rgbToHex(r, g, b)
     {
         if (arguments.length === 1) {
-            if (arguments[0].constructor === Array) {
+            if (Array.isArray(arguments[0])) {
                 var number = arguments[0];
                 r = number[0];
                 g = number[1];
