@@ -1,6 +1,6 @@
 {
   "name": "yy-color",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "color javascript library",
   "main": "color.js",
   "scripts": {
@@ -24,27 +24,34 @@
     "yy-random": "^1.0.1"
   },
   "eslintConfig": {
-    "env":
-    {
-        "commonjs": true,
-        "es6": true
+    "env": {
+      "commonjs": true,
+      "es6": true
     },
-    "parserOptions": {
-    },
+    "parserOptions": {},
     "rules": {
-        "indent": ["error", 4],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "no-undef": 1,
-        "no-unused-vars": 1
+      "indent": [
+        "error",
+        4
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-undef": 1,
+      "no-unused-vars": 1
     },
     "globals": {
-        "PIXI": true,
-        "document": true,
-        "window": true,
-        "debug": true,
-        "debugOne": true,
-        "console": true
+      "PIXI": true,
+      "document": true,
+      "window": true,
+      "debug": true,
+      "debugOne": true,
+      "console": true
     }
   }
 }
