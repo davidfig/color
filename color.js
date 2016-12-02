@@ -81,14 +81,26 @@ class Color
     /** based on tinycolor
     * https://github.com/bgrins/TinyColor
     * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
+    * @param {object|number} color {h, s, b} or h
+    * @param {number} [s]
+    * @param {number} [l]
+    * @returns number
     */
     hslToHex(color)
     {
-        var r, g, b,
+        var r, g, b, h, s, l;
+        if (arguments.length === 1)
+        {
             h = color.h,
             s = color.s,
             l = color.l;
+        }
+        else
+        {
+            h = arguments[0];
+            s = arguments[1];
+            l = arguments[2];
+        }
 
         function hue2rgb(p, q, t) {
             if (t < 0) t += 1;
