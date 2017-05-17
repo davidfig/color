@@ -124,8 +124,7 @@ class Color
             b = hue2rgb(p, q, h - 1/3);
         }
 
-        let rgb = { r: r * 255, g: g * 255, b: b * 255 };
-        return this.rgbToHex(rgb);
+        return this.rgbToHex(r * 255, g * 255, b * 255);
     }
 
     /* darkens a color by the percentage
